@@ -89,11 +89,11 @@
 
 <p>E a acurácia, que nada mais é do que a mais simples medida de acerto que podemos usar para avaliar nosso classificador: a proporção entre amostras corretamente classificadas e o número total de amostras do nosso conjunto de testes.</p>
 <p>Rodando pra checar os resultados, temos …</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;run_naive_bayes --csv_dataset .&#x2F;data&#x2F;digits.csv                                                                                     </span><br><span class="line">Score: 90.32</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;run_naive_bayes --csv_dataset .&#x2F;data&#x2F;iris.csv                                                                                       </span><br><span class="line">Score: 92.00</span><br></pre></td></tr></table></figure>
 
 <p>Como nosso classificador “aprende” com os dados de entrada, podemos notar que, diferentes conjuntos de treinamento podem fazer com que nosso classificador aprenda modelos com diferentes taxas de acerto.</p>
 <p>Então, rodando de novo …</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;run_naive_bayes --csv_dataset .&#x2F;data&#x2F;digits.csv                                                                                     </span><br><span class="line">Score: 90.77</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;run_naive_bayes --csv_dataset .&#x2F;data&#x2F;iris.csv                                                                                       </span><br><span class="line">Score: 85.33</span><br></pre></td></tr></table></figure>
 
 <p>Por isso, usualmente, para avaliarmos nosso modelo, é comum que calculemos a média de várias rodadas de treino e teste, e assim conseguirmos uma melhor avaliação do nosso modelo.</p>
 <p>Mas, basicamente, é isso aí.<br>Com esses conceitos basicos, você consegue implementar seu próprio classificador, e entender um pouco das entranhas de como funciona um modelo de aprendizado de máquina.</p>
