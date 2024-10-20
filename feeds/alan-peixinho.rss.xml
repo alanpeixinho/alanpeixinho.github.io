@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>Espaço do Peixinho - Alan Peixinho</title><link>https://alanpeixinho.github.io/</link><description></description><lastBuildDate>Wed, 05 Feb 2020 00:00:00 -0300</lastBuildDate><item><title>Sobre Classificadores e Teorema de Bayes</title><link>https://alanpeixinho.github.io/sobre-classificadores-e-teorema-de-bayes.html</link><description>&lt;p&gt;Umas das principais ferramentas na nossa caixa de ferramentas de reconhecimento de padrões certamente vem dos &lt;strong&gt;classificadores de padrões&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Então para começarmos nossa jornada, vamos entender alguns conceitos fundamentais.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.youtube.com/watch?v=cGufy1PAeTU"&gt;&lt;img alt="" src="/images/zelda_bayes.png"&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Classificação de Padrões&lt;/h2&gt;
+&lt;p&gt;Imagine um cenário onde temos diversas amostras separadas em diferentes grupos.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="" src="/images/pokemon_starters.png"&gt;&lt;/p&gt;
+&lt;p&gt;De forma bastante simples, qualquer pessoa mesmo …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Alan Peixinho</dc:creator><pubDate>Wed, 05 Feb 2020 00:00:00 -0300</pubDate><guid isPermaLink="false">tag:alanpeixinho.github.io,2020-02-05:/sobre-classificadores-e-teorema-de-bayes.html</guid><category>posts</category><category>machine learning</category><category>data science</category><category>chapel</category></item></channel></rss>

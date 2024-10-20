@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+
+    <meta charset="utf-8">
+    <title>'Uma gentil introdução a Machine Learning, Data Science e essas coisas legais' - Espaço do Peixinho</title>
+    <meta name="description" content="">
+    <meta name="author" content="Alan Peixinho">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="https://alanpeixinho.github.io/theme/html5.js"></script>
+    <![endif]-->
+
+
+    <!-- Le styles -->
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.1.1/css/bootstrap.no-icons.min.css" rel="stylesheet">
+    <link href="https://alanpeixinho.github.io/theme/local.css" rel="stylesheet">
+    <link href="https://alanpeixinho.github.io/theme/pygments.css" rel="stylesheet">
+    <link href="https://alanpeixinho.github.io/theme/font-awesome.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Gudea:400,400italic|Alegreya+SC' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+<header class="blog-header">
+  <div class="container">
+    <div class="row-fluid">
+      <div class="span9">
+	<a href="https://alanpeixinho.github.io" class="brand">Espaço do Peixinho</a>
+      </div>
+
+      <div class="span3" id="blog-nav">
+	<ul class="nav nav-pills pull-right">
+	    <li  class="active" >
+	      <a href="https://alanpeixinho.github.io/category/posts.html ">posts</a>
+	</ul>
+      </div>
+    </div> <!-- End of fluid row-->
+  </div>   <!-- End of Container-->
+</header>
+    
+<div class="container">
+    <div class="content">
+    <div class="row-fluid">
+
+        <div class="span10">
+    <div class='article'>
+      <div class="row-fluid">
+           <div class="content-title span9">
+             <h1>'Uma gentil introdução a Machine Learning, Data Science e essas coisas legais'</h1>
+           </div>
+      </div>
+    <div class="row-fluid">
+      <div class="span2">
+<p>Wed 12 April 2000 </p>
+
+<p style="text-align: left;">
+Filed under <a href="https://alanpeixinho.github.io/category/posts.html">posts</a>
+</p>
+<p style="text-align: left;">
+ 
+    Tags <a href="https://alanpeixinho.github.io/tag/machine-learning.html">machine learning</a> <a href="https://alanpeixinho.github.io/tag/data-science.html">data science</a> </p>
+<p>
+</p>
+      </div>
+      
+      <div class="span8">
+	<p>Constantemente me deparo com pessoas interessadas em aprender mais sobre data science. E isso se reflete principalmente na quantidade de blogs e materiais do tipo:</p>
+<table>
+<thead>
+<tr>
+<th><strong>PROGRAMADORES ODEIAM ELE.</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Torne-se um cientista de dados em 30 dias. <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Clique aqui.</a></strong></td>
+</tr>
+</tbody>
+</table>
+<p>Embora eles façam um papel interessante popularizando os conceitos e permitindo um contato inicial com a área, eles tendem a ser um tanto superficiais. Quase sempre focando em apresentar várias bibliotecas, sem muito cuidado em apresentar uma introdução teórica mais robusta. Eu sei que é papo de nerd, mas, é importante, confie em mim. No mundo real, a coisa é um pouco mais difícil do que rodar jupyter notebooks com o tensorflow.</p>
+<p>Mas, não se preocupe, sei que é importante colocar a mão na massa, e vamos fazer isso. Mas como eu <strike>sou hipster</strike> quero propor algo diferente, vamos evitar scikit-learn e outras bibliotecas convencionais, e implementar nossos próprios códigos, mesmo que eles nao tenham a melhor implementação possível, ainda serve como uma boa forma de aprendizado. E é algo que recomendo muito. Faça o seu. Experimente outras linguagens. É divertido.</p>
+<p>Mas, sem mais delongas, antes de comecarmos a nos aprofundar, vem a pergunta de um milhão de dólares.</p>
+<blockquote>
+<p>O que é Data Science? E Machine Learning? Pattern Recognition? </p>
+</blockquote>
+<p>Pode parecer algo trivial, mas mesmo para profissionais da área, é bastante comum encontrar uma certa dificuldade em separar e definir esses conceitos de forma apropriada. Um dos principais motivos da dificuldade em definir esses termos, é que eles tendem a se misturar um pouco, o que por vezes, dificulta definir onde exatamente um começa e o outro termina. Mas vamos tentar esboçar nossa definiçao.</p>
+<h3>Machine Learning</h3>
+<p>Pessoas adoram resolver problemas, mas ao mesmo tempo, elas odeiam ter trabalho para resolvê-los.</p>
+<p><img alt="" src="https://media.giphy.com/media/BIPRDoFF8DbPi/giphy.gif"></p>
+<p>Dentro desse dilema, procuramos sempre encontrar as formas mais simples para resolver nossos problemas. E a computação é isso: a ferramenta definitiva da preguica humana.</p>
+<p>E por que isso?</p>
+<p>Inicialmente, a solução de qualquer problema, envolvia desenvolvermos um <em>hardware</em> capaz de lidar com aquele determinado problema. <a href="https://pt.wikipedia.org/wiki/%C3%81baco">Ábacos</a>, <a href="https://pt.wikipedia.org/wiki/Prensa_m%C3%B3vel">prensas tipográficas</a>, <a href="https://pt.wikipedia.org/wiki/Toca-discos">vitrolas</a>, são máquinas mecânicas criadas para resolver problemas específicos. E, sempre que pensarmos num novo problema, naturalmente precisaremos de uma nova máquina (hardware) que seja implementado para resolve-lo.</p>
+<p>Graças ao grande <a href="https://pt.wikipedia.org/wiki/Benedict_Cumberbatch">Alan Turing</a> (<strike>ateu, homossexual e</strike> pai da computação) ganhamos nossos queridos computadores, que nada mais são do que máquinas (<em>hardware</em>) programáveis, onde podemos contruir uma máquina única, capaz de resolver diversos problemas, exigido apenas que escrevamos um conjunto de instruções (programas) para tal. Embora tenha sido um passo incrivel na resolução de problemas, escrever programas utilizando as intruções de uma máquina é uma tarefa <strike>de corno</strike> tediosa, exigindo conhecer a máquina em que serão executados, e consequentemente, restringindo seus programas a executarem em um hardware específico.</p>
+<p>Como uma forma de superar essas limitações, surgiram as linguagens de alto nível, que, nada mais são, do que uma linguagem não ambígua (ou ambigua se voce estiver programando em C++) que pode ser traduzida para o conjunto de instruções de uma máquina, por meio dos compiladores (ou interpretadores). Com isso, podemos resolver problemas, escrevendo um único programa capaz de rodar em diversas máquinas.</p>
+<p>Ainda nos sobrou um pequeno inconveniente: temos que escrever programas para resolver nossos problemas.</p>
+<p>E é nesse ponto que entra o Machine Learning, que nada mais é do que ser capaz de escrever um único programa, que seja capaz de se adaptar de acordo com os dados fornecidos.</p>
+<p>Isso parece um pouco genérico, eu sei. Mas, é por que Machine Learning é um conceito bastante genérico mesmo. Desde que seu programa seja capaz de alterar seu comportamento, para melhor se adequar aos dados, sem que seja necessário escrever um novo programa, você já está usando o paradigma de machine learning. Mas para mais detalhes sobre como podemos escrever aplicações baseadas em machine learning, vamos discutir um pouco a respeito de Pattern Recognition.</p>
+<h3>Pattern Recognition</h3>
+<p>Já sabemos que aprendizado de máquina, se baseia em criar algoritmos capazes de se adaptar aos dados. </p>
+<p>Mas, como fazemos isso?</p>
+<p>A forma mais comum é utilzar-se dos conceitos de pattern recognition (reconhecimento de padrões), que tem como objetivo encontrar padrões e regularidades nos dados.</p>
+<p>Consultando nosso amigo Wikipedia um padrão pode ser descrito como:</p>
+<blockquote>
+<p><strong>Padrão (Pattern)</strong></p>
+<p>Um padrão, além do uso do termo para significar template, é uma  discernível regularidade no mundo ou em um design feito pelo homem. Isto posto, os elementos em um padrão repetem-se de maneira previsível.</p>
+</blockquote>
+<p>Podemos encontrar ainda outras definições do que é um padrão, mas essa serve bem aos nossos propósitos <strike>maléficos</strike>, pois o reconhecimento de padrões consiste de tentar encontrar regularidades <strong>previsíveis</strong> em um conjunto de dados.</p>
+<p>Então, de forma simplificada, o reconhecimento de padrões será nossa estante de ferramentas que permite aplicarmos o aprendizado de máquinas a diversos problemas.</p>
+	<hr />
+      </div>
+    </div>
+    <div class="span10">
+      <h3>Comments</h3>
+    
+    </div>  
+    </div>
+        </div>
+        
+        
+    </div>     </div> </div>
+
+<!--footer-->
+<div class="container">
+  <div class="well" style="background-color: #E9EFF6">
+    <div id="blog-footer">
+      <div class="row-fluid">
+	<div class="social span2" align="center" id="socialist">
+	  <ul class="nav nav-list">
+	    <li class="nav-header">
+	      Social
+	    </li>
+	    <li><a href="http://github.com/alanpeixinho"><i class="icon-github" style="color: #1f334b"></i>github</a></li>
+	    <li><a href="https://br.linkedin.com/in/alan-zanoni-peixinho-2816ab23"><i class="icon-linkedin" style="color: #1f334b"></i>linkedin</a></li>
+
+	  </ul>
+	</div>
+        <div class="links span2" align="center">
+          <ul class="nav nav-list">
+            <li class="nav-header"> 
+              Links
+            </li>
+            
+            <li><a href="https://github.com/alanpeixinho/FishLearning">Fish Learning</a></li>
+          </ul>
+        </div>
+	<div class="site-nav span2" align="center">
+          <ul class="nav nav-list" id="site-links">
+            <li class="nav-header"> 
+              Site
+            </li>
+            <li><a href="https://alanpeixinho.github.io"><i class="icon-home" style="color: #1f334b">
+                </i>Home</a></li>
+            <li><a href="https://alanpeixinho.github.io/archives.html"><i class="icon-list" style="color: #1f334b">
+                </i>Archives</a></li>
+	    <li><a href="https://alanpeixinho.github.io/tags.html"><i class="icon-tags" style="color: #1f334b">
+                </i>Tags</a></li>
+	    
+	  </ul>
+
+        </div>
+
+      </div> <!--end of fluid row-->
+    </div> <!--end of blog-footer-->
+    <hr />
+    <p align="center"><a href="https://alanpeixinho.github.io">Espaço do Peixinho</a>
+      &copy; Alan Peixinho
+    Powered by <a href="https://github.com/getpelican/pelican">Pelican</a> and
+        <a href="https://twitter.github.com/bootstrap">Twitter Bootstrap</a>. 
+        Icons by <a href="https://fortawesome.github.com/Font-Awesome">Font Awesome</a> and 
+        <a href="https://gregoryloucas.github.com/Font-Awesome-More">Font Awesome More</a></p>
+
+  </div> <!--end of well -->
+</div> <!--end of container -->
+
+<!--/footer-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+
+
+
+</body>
+</html>
