@@ -51,275 +51,130 @@
 
     <div class='row-fluid''>
         <div class="article-title span9">
-            <a href="https://alanpeixinho.github.io/sobre-classificadores-e-teorema-de-bayes.html"><h1>Sobre Classificadores e Teorema de Bayes</h1></a>
+            <a href="https://alanpeixinho.github.io/retrocompatibilidade-e-espaco-de-cores.html"><h1>Retrocompatibilidade e Espaco de cores</h1></a>
         </div>
     </div>
     <div class="row-fluid">
       <div class="span2">
-<p>Wed 05 February 2020 </p>
+<p>Mon 21 October 2024 </p>
 
 <p style="text-align: left;">
 Filed under <a href="https://alanpeixinho.github.io/category/posts.html">posts</a>
 </p>
 <p style="text-align: left;">
  
-    Tags <a href="https://alanpeixinho.github.io/tag/machine-learning.html">machine learning</a> <a href="https://alanpeixinho.github.io/tag/data-science.html">data science</a> <a href="https://alanpeixinho.github.io/tag/chapel.html">chapel</a> </p>
+    Tags <a href="https://alanpeixinho.github.io/tag/image-processing.html">image processing</a> <a href="https://alanpeixinho.github.io/tag/chapel.html">chapel</a> </p>
 <p>
 </p>
       </div>
       <div class="article-content span8">
-	<p>Umas das principais ferramentas na nossa caixa de ferramentas de reconhecimento de padrões certamente vem dos <strong>classificadores de padrões</strong>.</p>
-<p>Então para começarmos nossa jornada, vamos entender alguns conceitos fundamentais.</p>
-<p><a href="https://www.youtube.com/watch?v=cGufy1PAeTU"><img alt="" src="/images/zelda_bayes.png"></a></p>
-<h2>Classificação de Padrões</h2>
-<p>Imagine um cenário onde temos diversas amostras separadas em diferentes grupos.</p>
-<p><img alt="" src="/images/pokemon_starters.png"></p>
-<p>De forma bastante simples, qualquer pessoa mesmo que não conheça pokémon, é capaz de encontrar algum padrão na organização desses grupos. E, com isso, incluir uma nova amostra em um desses grupos.</p>
-<p><img alt="" src="/images/poliwag.png"></p>
-<p>Esse processo de identificar um padrão, e aprender a organizar novas amostras, seguindo o padrão pre-estabelecido é conhecido como <strong>classificação de padrões</strong>.</p>
-<p>De forma mais simples, dado um conjunto de amostras que representem um problema que queremos aprender, as quais vamos chamar de <strong>base de treinamento</strong>, e aplicar essa mesma regra de organização para qualquer outra amostra nova que também pertença a essa população, num processo conhecido como <strong>predição</strong>.</p>
-<blockquote>
-<p>Agora como podemos criar uma forma automática capaz de encontrar padrões, aprender seu processo de construção, e aplicar essa regra a novas amostras desconhecidas?</p>
-</blockquote>
-<p><img alt="" src="/images/programmer_harry.jpg"></p>
-<p>Magia arcana e matemática, são as principais abordagens utilizadas nessa tarefa. Devido a restrições de tempo, por hora vamos usar matemática para resolver esse problema.</p>
-<p>Mais especificamente, vamos usar probabilidade, e um conceito conhecido como <a href="https://pt.wikipedia.org/wiki/Teorema_de_Bayes">Teorema de Bayes</a>.</p>
-<h3>Base de treinamento</h3>
-<p>Para os nossos exemplos, vamos trabalhar com a base de dados de classificação de flores <a href="https://pt.wikipedia.org/wiki/Conjunto_de_dados_flor_Iris">Iris</a>, onde dadas as informações de comprimento e largura das sépalas e pétalas, aprendemos a distinguir entre  <em>Iris setosa</em>, <em>Iris virginica</em> e <em>Iris versicolor</em>.</p>
-<h3>Classificadores Probabilísticos</h3>
-<p>O mesmo conceito pode ser descrito, ainda de forma bem superficial, com uma abordagem um pouco mais formal.
-Afinal, o que é a nossa amostra?
-Para propositos práticos, vamos representar nossas amostras matematicamente como um vetor de características numericas (ao menos por enquanto). Dessa forma cada amostra \(x\) é representada como um ponto na dimensão \(R^n\), ou seja, \(x\in\mathbb{R}^n\).
-Cada uma dessas amostras, como comentamos anteriormente, é divida entre \(C=\{c_1,c_2,\dots,c_c\}\) classes distintas, onde um rótulo \(y\in C\) representa o grupo ao qual essa amostra pertence.</p>
-<p>Agora, pensando numa abordagem probabilística, nosso classificador pode ser definido como a probabilidade </p>
-<div class="math">$$ P(y=c_i|x) $$</div>
-<p> para cada uma das classes em \(c\).</p>
-<blockquote>
-<p>Auxílio Alzheimer: P(A|B) significa a probabilidade condicional de A dado B.
-Que nos dá a probabilidade de um evento A ocorrer, dado que um evento B já ocorreu.</p>
-</blockquote>
-<h3>Teorema de Bayes</h3>
-<p>De forma muito simplificada, o teorema de Bayes nos permite calcular uma probabilidade condicionada a um evento, a partir de informações de probabilidade que conhecemos.</p>
-<p>Ok, muito vago.</p>
-<p>Então, vamos definí-lo de forma mais clara.</p>
-<div class="math">$$ P(A|B) =  \frac{P(A) P(B|A)}{P(B)} $$</div>
-<p>Basicamente, o teorema de Bayes nos permite calcular a probabilidade de um evento condicional, desde que conheçamos a probabilidade de cada evento isolado -&gt; \(P(A) \)e \(P(B)\), bem como a probabilidade da condicional inversa -&gt; \(P(B|A)\).</p>
-<p>Num cenário de classificação de padrões, isso nos permite descrever a probabilidade de uma amostra pertencer a uma determinada classe \(c\), como:</p>
-<div class="math">$$ P(y=c_i|x) = \frac{P(y=c_i) P(x|y=c_i)}{P(x)} $$</div>
-<p>Isso significa que conseguimos construir um classificador probabilístico desde que possamos calcular os valores (ou uma aproximação) das probabilidades dos eventos base \(P(y=c_i),P(x)\ e\ P(x|y=c_i)\).</p>
-<p>Agora que temos a estrutura necessária para o nosso classificador bayesiano, precisamos definir como computar as probabilidades para cada um dos eventos base.</p>
-<h6>\( \mathbf{P(y=c_i)} \)</h6>
-<p>A probabilidade de que caso selecionemos qualquer amostra aleatoriamente do nosso problema ela pertença a classe \(c_i\).
-Considerando que nossa base de treinamento tenha sido construída de forma aleatória (o que é importante, mas comumente ignorado), podemos dizer que a probabilidade de tal evento pode ser aproximada pelo número de amostras que pertencem a classe \(c_i\), pelo número total de amostras da nossa base de treinamento.</p>
-<div class="math">$$ P(y=c_i) = \frac{|y=c_i|}{|y|} $$</div>
-<p>Achei fácil.</p>
-<h6>\( \mathbf{P(x)} \)</h6>
-<p>A probabilidade de ocorrencia da nossa amostra \(x\).
-Agora temos algo um pouco mais complicado. pois \(x\in\mathbb{R}^n\), ou seja, além de um número real, temos n variaveis distintas a considerar.</p>
-<p>Para tratar o caso de múltiplas variáveis, vamos introduzir uma suposição, a de que todas as características sao <strong>mutuamente exclusivas</strong>, dessa forma uma probabilidade \(P(x)\) corresponde ao produto das probabilidades de cada variável \(x_i\). Ou seja:</p>
-<div class="math">$$P(x)=\prod{P(x_i)}$$</div>
-<p>Contudo, ainda nos resta computar \(P(x_i)\) para cada variável do nosso vetor de características. E aí reside nosso maior problema. Para tal, teríamos que conhecer a distribuição de cada uma das variáveis do nosso vetor de características, as quais não conhecemos.</p>
-<p>Como quase sempre em machine learning, a resposta é assumir que os dados seguem alguma distribuição (quase sempre uma <a href="https://pt.wikipedia.org/wiki/Distribui%C3%A7%C3%A3o_normal">distribuição normal</a>), fechar os olhos e seguir a vida. E, desde que essa nossa distribuição não se afaste (muito) da distribição real dos dados, o modelo consegue se virar razoavelmente bem.</p>
-<blockquote>
-<p>Mas tem um limite pro quanto você pode chutar o balde, seu preguiçoso. Então, no mínimo, de uma olhada nos seus dados pra saber se a distribuição que você está assumindo não está muito longe da distribuição real dos seus dados, antes de assumir que o pobre classificador bayesiano não funciona.</p>
-</blockquote>
-<p>Para os nossos dados da base de iris, vamos asumir uma distribuição normal, onde média e desvio padrão sao computadas a partir dos dados.</p>
-<p><img alt="" src="/images/iris_feats_plot.svg"></p>
-<p>Como podemos notar, embora a distribuição assumida (linhas) não apresente um casamento perfeito com os dados (barras), temos uma aproximação boa o suficiente para assumir, para nossos propósitos maléficos, que nossa distribuição está correta.</p>
-<h4>\(\mathbf{P(x|y=c_i)}\)</h4>
-<p>Valem as mesmas regras para o computo de \(P(x)\), contudo, nesse caso, vamos isolar apenas as amostras em que \(y=c_i\).</p>
-<p>Com isso temos os conceitos básicos pra entender a base de um classificador bayesiano, bem como podemos entender as principais restrições na construção de seu modelo, que são a <strong>independencia entre as variáveis</strong> do nosso vetor de características, e que o modelo da *<em>função densidade probabilidade</em> reflita a distribuição real dos dados.</p>
-<blockquote>
-<p>É bastante importante que você leve em consideração as restrições de um modelo antes de utilizá-lo em qualquer problema de classificação. Dessa forma, você pode <strong>ignorar essas restrições de forma consciente</strong>  (como todo bom cientista de dados), e aplicar o modelo ainda assim, porque vai que funciona.</p>
-</blockquote>
-<h3>Implementando a p###a toda</h3>
-<p>Considerando as definições utilizadas anteriormente, a maioria das implementações de classificadores terão uma mesma interface comum, tanto para o aprendizado quanto para a predição. Algo nas linhas de:</p>
-<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="nx">X</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">m</span><span class="p">][</span><span class="mi">1</span><span class="o">..</span><span class="nx">n</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="nx">Y</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">m</span><span class="p">]</span><span class="w"> </span><span class="kt">int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="o">..</span><span class="p">.</span>
+	<p>Imagens podem ser entendidas como sinais bidimensionais (ou tridimensionais no caso de volumes 3D).</p>
+<p>Pensando no caso de imagens digitais, vamos representá-las como um matriz de pixels representando o brilho de uma determinada região.</p>
+<p><img alt="" src="/images/mario_gray_pixel.png"></p>
+<p>Para incluir informação de cor, cada pixel passa a ser representada por uma tupla de 3 valores RGB que representam a componente vermelha, verde e azul, respectivamente.</p>
+<p>Ate aí, nada fora do usual. Contudo, isso torna a vida de implementar bibliotecas em processamento de imagens com suporte a cor <strike>um inferno na terra</strike> um pouco inconveniente, nos obrigando a lidar com um mar de cópias e conversões desnecessárias de imagens, sempre tendo que tratar casos com cor e sem cor.</p>
+<p>Mas tem um truque interessante aplicado nos primordios da transmissao de sinais de tv a cores que pode nos ser útil.
+Na era <a href="https://pt.wikipedia.org/wiki/Mesozoico">mezozoica</a> em que as pessoas dividiam espaço com os terriveis dinossauros, elas sofriam com polio e TVs sem cores. Obviamente, o problema das TVs a cores foi atacado primeiro, e com seu desenvolvimento surgiu um problema: o sistema de transmissao de TV analógico (não temos pixels aqui, mas a ideia segue) é contruído em torno de sistemas de vídeo sem cores, que contém apenas a informação de brilho. Como podemos adaptar os sistemas de transmissão, para enviar informações de cor, enquanto mantemos compatibilidade com sistemas sem cor?</p>
+<p>A resposta encontrada foi o uso do espaço de cores <a href="https://en.wikipedia.org/wiki/YCbCr">YCbCr</a>, definido por nossos amigos da <a href="https://pt.wikipedia.org/wiki/NTSC">NTSC</a>, um sistema de cores onde separamos as informações de luminância (Y) e crominância (Cb e Cr). De forma que aparelhos antigos pudessem interpretar a informação de luminância e ignorar a informação de croma, mantendo-se acessivel a TVs preto e branco.</p>
+<p>Embora possamos usar YCbCr nas implementações futuras, pretendo usar <a href="https://en.wikipedia.org/wiki/CIELAB_color_space">Lab</a>, que tambem possui a característica interessante de separar luminância e crominância, esse formato ainda se propõe a ser um formato onde variações numericas correspondam a percepção de mudanca de cor percebida por meros humanos.</p>
+<p>O espaço Lab é composto por luminância (L) que representa a informação de brilho que é representada num dominio de [0,100], e as componentes de cor (ab) que representam a mudanca entre verde a vermelho (a) r azul a amarelo (b) ambas representadas num domínio de [-128, 128].</p>
+<h3>Mão na massa</h3>
+<p>Para podermos converter nossas imagens, normalmente representadas num espaço RGB (ou sRGB pra ser mais preciso), vamos precisar introduzir o espaço de cores <a href="https://en.wikipedia.org/wiki/CIE_1931_color_space">XYZ</a> (sim, temos mais espaços de cores do que pode imaginar). A ideia é que XYZ é um espaço de cores extremamente abrangente e que consegue abrigar todas as cores visíveis, o que acaba fazendo desse formato uma excelente opção de formato intermediário de conversão entre todos os demais formatos. Com isso ele será o nosso comutador de cores, e pra incluir conversão de cores para qualquer novo formato, nos basta implementar uma opção de conversão de/para o formato XYZ.</p>
+<p>Então, nosso primeiro passo é converter nossa entrada RGB para o espaço XYZ, que consiste de três operações básicas:</p>
+<ol>
+<li>Escalarmos nosso valor RGB de tal forma que cada componente fique dentro do dominio [0,1], usualmente a representação de RGB vai depender do numero de bits útilizado na representação de cores da imagem ([0,256) ou [0,65536) para imagens de 8 ou 16 bits).</li>
+<li>Uma correção de gamma que é responsável por resolver alguns problemas de não linearidade na representação usual de cores.</li>
+<li>A conversão de fato, que consiste de uma transformação linear para o espaço XYZ.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">rgb2xyz</span><span class="p">(</span><span class="nx">red</span><span class="p">,</span><span class="w"> </span><span class="nx">green</span><span class="p">,</span><span class="w"> </span><span class="nx">blue</span><span class="p">,</span><span class="w"> </span><span class="nx">max</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">255.0</span><span class="p">):</span><span class="w"> </span><span class="p">(</span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">r</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">red</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">max</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">g</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">green</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">max</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">b</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">blue</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">max</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// gamma correction</span>
+<span class="w">    </span><span class="nx">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.04045</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">12.92</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">((</span><span class="nx">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.055</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1.055</span><span class="p">)</span><span class="o">**</span><span class="mf">2.4</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">g</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.04045</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">g</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">12.92</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">((</span><span class="nx">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.055</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1.055</span><span class="p">)</span><span class="o">**</span><span class="mf">2.4</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.04045</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">12.92</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">((</span><span class="nx">b</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.055</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1.055</span><span class="p">)</span><span class="o">**</span><span class="mf">2.4</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// convert xyz</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.4124564</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.3575761</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.1804375</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2126729</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.7151522</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.072175</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0193339</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.119192</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">g</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.9503041</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">b</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="nx">x</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">):</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="o">..</span><span class="p">.</span>
+<p>A conversão entre XYZ e Lab é bastante similar e consiste de 3 passos:</p>
+<ol>
+<li>Escalarmos nosso valor, considerando um determinado ponto de referencia para o branco (usualmente D65 que representa o branco percebido em ambientes de luz natural).</li>
+<li>Aplicarmos uma função <span class="math">\(f(x)=\cases{\sqrt[3]{x} &amp; if x&gt;(216/24389) \\ { { (24389/27) x + 16} \over {116}} &amp; \text{otherwise}}\)</span> que aplica a transformação responsável por aproximar o espaço de representação da percepção humana.</li>
+<li>A conversão que consiste de uma transformação para o espaço Lab.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">xyz2lab</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="p">):</span><span class="w"> </span><span class="p">(</span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="c1">// reference white point (D65)</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">wx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.95047</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">wy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.00000</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">wz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.08883</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">fx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">wx</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">wy</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">z</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">wz</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">epsilon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">216.0</span><span class="o">/</span><span class="mf">24389.0</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">kappa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">24389.0</span><span class="o">/</span><span class="mf">27.0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nx">fx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">fx</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">epsilon</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">cbrt</span><span class="p">(</span><span class="nx">fx</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">(</span><span class="nx">kappa</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">fx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">16.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">116.0</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">fy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">epsilon</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">cbrt</span><span class="p">(</span><span class="nx">fy</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">(</span><span class="nx">kappa</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">16.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">116.0</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">fz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">epsilon</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">cbrt</span><span class="p">(</span><span class="nx">fz</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">(</span><span class="nx">kappa</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">16.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">116.0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mf">116.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">fy</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">16.0</span><span class="p">;</span><span class="w"> </span><span class="c1">// [0,100]</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">500.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">fx</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">fy</span><span class="p">);</span><span class="w"> </span><span class="c1">// [-128, 128]</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">200.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">fy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">fz</span><span class="p">);</span><span class="w"> </span><span class="c1">// [-128, 128]</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nx">l</span><span class="p">,</span><span class="w"> </span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 
-<p>Com isso, podemos implementar os passos para o treinamento do nosso classificador.</p>
-<blockquote>
-<p>Eu sei que chapel nao é la uma linguagem muito conhecida, mas ela é legivel o suficiente, pra qualquer um que venha de Python ou C++.</p>
-</blockquote>
-<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span><span class="w"> </span><span class="nx">Y</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<p>A operação inversa, a qual vamos precisar para salvar nossas imagens de volta no espaço RGB, consiste simplesmente da inversa das mesmas funções.</p>
+<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">lab2xyz</span><span class="p">(</span><span class="nx">l</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="nx">a</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="p">):</span><span class="w"> </span><span class="p">(</span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">//white reference</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">wx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.95047</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">wy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.00000</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">wz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.08883</span><span class="p">;</span>
 
-<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="p">(</span><span class="nx">n_train</span><span class="p">,</span><span class="w"> </span><span class="nx">n_feats</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">X</span><span class="p">.</span><span class="nx">shape</span><span class="p">;</span>
-<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">n_classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">max</span><span class="p">(</span><span class="nx">Y</span><span class="p">):</span><span class="w"> </span><span class="kt">int</span><span class="p">(</span><span class="mi">64</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mf">16.0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">l</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">116.0</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">fx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="nx">a</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">500.0</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">200.0</span><span class="p">);</span>
 
-<span class="w">  </span><span class="c1">//global feature model</span>
-<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">mu</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_feats</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">;</span>
-<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">sigma</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_feats</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">kappa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">24389.0</span><span class="o">/</span><span class="mf">27.0</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">epsilon</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">216.0</span><span class="o">/</span><span class="mf">24389.0</span><span class="p">;</span>
 
-<span class="w">  </span><span class="c1">//classes feature model</span>
-<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">mu_c</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_classes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_feats</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">;</span>
-<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">sigma_c</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_classes</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_feats</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">delta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">cbrt</span><span class="p">(</span><span class="nx">epsilon</span><span class="p">);</span>
 
-<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">p_class</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_classes</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">;</span>
-</code></pre></div>
+<span class="w">    </span><span class="nx">fx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">fx</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">delta</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">fx</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mf">3.0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">(</span><span class="mf">116.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">fx</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">16.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">kappa</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">fy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">delta</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mf">3.0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">(</span><span class="mf">116.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">16.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">kappa</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">fz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">delta</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mf">3.0</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">(</span><span class="mf">116.0</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">16.0</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">kappa</span><span class="p">;</span>
 
-<p>Essas sao as principais variaveis que vamos usar.
-Onde <em>n_train</em>, <em>n_feats</em> e <em>n_classes</em> sao exatamente isso que elas descrevem, nem sei porque incluí isso, <em>mu</em> e <em>mu_c</em> representam o valor médio global das features e o valor médio das features para cada classe, da mesma forma, <em>sigma</em> e <em>sigma_c</em>, representam o desvio padrão global e das classe, <em>p_class</em> representa a probabilidade de uma amostra pertencer a uma determinada classe (\(P(y=c_i)\)).</p>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">n_train_c</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_classes</span><span class="p">]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nx">fx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">wx</span><span class="p">,</span><span class="w"> </span><span class="nx">fy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">wy</span><span class="p">,</span><span class="w"> </span><span class="nx">fz</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">wz</span><span class="p">);</span>
+<span class="p">}</span>
 
-<span class="w">  </span><span class="nx">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">mu_c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="w">  </span><span class="nx">sigma_c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+<span class="k">proc</span><span class="w"> </span><span class="nf">xyz2rgb</span><span class="p">(</span><span class="nx">x</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="nx">z</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="nx">maxval</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">255.0</span><span class="p">):</span><span class="w"> </span><span class="p">(</span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">,</span><span class="w"> </span><span class="kt">real</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">r</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.2406</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1.5372</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.4986</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">z</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">g</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">0.9689</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1.8758</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">0.0415</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">z</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">b</span><span class="p">:</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0557</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.2040</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1.0570</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">z</span><span class="p">;</span>
 
-<span class="w">  </span><span class="c1">//compute mean</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_train</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Y</span><span class="p">(</span><span class="nx">i</span><span class="p">):</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">mu</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">X</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="o">..</span><span class="p">);</span>
-<span class="w">    </span><span class="nx">mu_c</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="nx">X</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">);</span>
-<span class="w">    </span><span class="nx">n_train_c</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="w">  </span><span class="nx">mu</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="nx">n_train</span><span class="p">;</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nx">f</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_feats</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">mu_c</span><span class="p">(</span><span class="o">..</span><span class="p">,</span><span class="w"> </span><span class="nx">f</span><span class="p">)</span><span class="w"> </span><span class="o">/=</span><span class="w"> </span><span class="nx">n_train_c</span><span class="p">;</span>
-<span class="w">  </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// gamma correction</span>
+<span class="w">    </span><span class="nx">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0031308</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">12.92</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mf">1.055</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">r</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.4</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.055</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">g</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">g</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0031308</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">g</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">12.92</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mf">1.055</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">g</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.4</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.055</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0031308</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">12.92</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="mf">1.055</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">2.4</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">0.055</span><span class="p">);</span>
 
-<span class="w">  </span><span class="c1">//compute standard deviation</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_train</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Y</span><span class="p">(</span><span class="nx">i</span><span class="p">):</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">sigma</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="nx">X</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
-<span class="w">    </span><span class="nx">sigma_c</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">(</span><span class="nx">X</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">mu_c</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span><span class="p">;</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="w">  </span><span class="nx">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">sigma</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">n_train</span><span class="p">);</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nx">f</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_feats</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">sigma_c</span><span class="p">(</span><span class="o">..</span><span class="p">,</span><span class="w"> </span><span class="nx">f</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">sigma_c</span><span class="p">(</span><span class="o">..</span><span class="p">,</span><span class="nx">f</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">n_train_c</span><span class="p">);</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="w">  </span><span class="c1">//compute P(class)</span>
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_classes</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nx">p_class</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">n_train_c</span><span class="p">(</span><span class="nx">c</span><span class="p">):</span><span class="w"> </span><span class="kt">real</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">n_train</span><span class="p">;</span>
-<span class="w">  </span><span class="p">}</span>
-</code></pre></div>
-
-<p>Com isso, já temos todas as informações necessárias ao nosso modelo.</p>
-<p>Mas, na maioria das implementações você verá que trabalha-se com o log das probabilidades.
-Pois assim, podemos substituir o produtório citado acima, por uma simples soma, já que:</p>
-<div class="math">$$\prod{P(x_i)}=exp(\sum(log(x)))$$</div>
-<p>, e o mesmo vale pra demais operacões de multiplicação ou divisão que são substituídas por uma simples soma/subtração.</p>
-<p>Então, uma linha a mais:</p>
-<div class="highlight"><pre><span></span><code><span class="nx">p_class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">log</span><span class="p">(</span><span class="nx">p_class</span><span class="p">);</span>
-</code></pre></div>
-
-<p>A predicão, agora, nada mais é do que, utilizarmos essas variaveis de modelo, para computar as probabilidades condicionais necessárias ao classificador bayesiano.</p>
-<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="nx">x</span><span class="p">):</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="c1">//P(x)</span>
-<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">p_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">gaussianPdf</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">mu</span><span class="p">,</span><span class="w"> </span><span class="nx">sigma</span><span class="p">);</span>
-<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">p_joint_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sum</span><span class="p">(</span><span class="nx">log</span><span class="p">(</span><span class="nx">p_data</span><span class="p">));</span>
-
-<span class="w">    </span><span class="c1">//P(y|x)</span>
-<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">p_class_given_data</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_classes</span><span class="p">]</span><span class="w"> </span><span class="kt">real</span><span class="p">;</span>
-
-<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">c</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_classes</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="c1">//P(x|y)</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">p_data_given_class</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">gaussianPdf</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">mu_c</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">),</span><span class="w"> </span><span class="nx">sigma_c</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">));</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">p_joint_data_given_class</span><span class="w"> </span><span class="o">=</span><span class="w">  </span><span class="nx">sum</span><span class="p">(</span><span class="nx">log</span><span class="p">(</span><span class="nx">p_data_given_class</span><span class="p">));</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">p_joint_data_given_class</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">p_class</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">p_joint_data</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">p_class_given_data</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">p</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-
-
-<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">argmax</span><span class="p">(</span><span class="nx">p_class_given_data</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nx">r</span><span class="o">*</span><span class="nx">maxval</span><span class="p">,</span><span class="w"> </span><span class="nx">g</span><span class="o">*</span><span class="nx">maxval</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="o">*</span><span class="nx">maxval</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div>
 
-<p>Após computado o vetor de probabilidades \(P(y=c_i|x)\), nossa classe predita corresponde a classe de maior probabilidade \(\arg\max(P(y=c_i))\).</p>
-<p>E, como adotamos um modelo gaussiano, a implementação da função densidade probabilidade gaussiana:</p>
-<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">gaussianPdf</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">mu</span><span class="p">,</span><span class="w"> </span><span class="nx">sigma</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">expo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="p">(</span><span class="nx">x</span><span class="o">-</span><span class="nx">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">epsilon</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">sigma</span><span class="o">**</span><span class="mi">2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">epsilon</span><span class="p">);</span>
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="mf">1.0</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="nx">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">pi</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="nx">sigma</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">epsilon</span><span class="w"> </span><span class="p">)))</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">exp</span><span class="p">(</span><span class="nx">expo</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<p>Vale lembrar, que nesse caso, adotamos um modelo gaussiano para o nosso classificador, mas você pode adotar outras funções que descrevam melhor seu modelo. Mas aí, já é um problema seu.</p>
-<p>Por fim, vamos colocar tudo pra rodar num exemplo.</p>
-<p>Nossa base de dados de classificação de flores está num arquivo CSV, contendo os três descritores da amostra, e sua classe, respectivamente.</p>
-<div class="highlight"><pre><span></span><code><span class="mf">5.30</span><span class="p">,</span><span class="mf">3.70</span><span class="p">,</span><span class="mf">1.50</span><span class="p">,</span><span class="mf">0.20</span><span class="p">,</span><span class="mf">1.00</span>
-<span class="mf">5.00</span><span class="p">,</span><span class="mf">3.30</span><span class="p">,</span><span class="mf">1.40</span><span class="p">,</span><span class="mf">0.20</span><span class="p">,</span><span class="mf">1.00</span>
-<span class="mf">7.00</span><span class="p">,</span><span class="mf">3.20</span><span class="p">,</span><span class="mf">4.70</span><span class="p">,</span><span class="mf">1.40</span><span class="p">,</span><span class="mf">2.00</span>
-<span class="mf">6.40</span><span class="p">,</span><span class="mf">3.20</span><span class="p">,</span><span class="mf">4.50</span><span class="p">,</span><span class="mf">1.50</span><span class="p">,</span><span class="mf">2.00</span>
-</code></pre></div>
-
-<p>Para testar nosso classificador bayesiano, vamos dividir aleatoriamente esse conjunto de dados em 2, chamados de treino e teste.
-O conjunto de treino será utilizado no treinamento do nosso classificador, e o conjunto de testes será usado para verificarmos o grau de acerto do nosso classificador, comparando a classe predita, com a classe real da amostra.</p>
-<div class="highlight"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="nx">data</span><span class="p">;</span>
-<span class="k">use</span><span class="w"> </span><span class="nx">naive_bayes</span><span class="p">;</span>
-<span class="k">use</span><span class="w"> </span><span class="nx">math</span><span class="p">;</span>
-<span class="k">use</span><span class="w"> </span><span class="nx">utils</span><span class="p">;</span>
-
-<span class="kd">config</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">csv_dataset</span><span class="p">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
-
-<span class="k">proc</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">dataset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">readCSV</span><span class="p">(</span><span class="nx">csv_dataset</span><span class="p">,</span><span class="w"> </span><span class="nx">delimiter</span><span class="o">=</span><span class="s">&#39;,&#39;</span><span class="p">);</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="p">(</span><span class="nx">Xtrain</span><span class="p">,</span><span class="w"> </span><span class="nx">Ytrain</span><span class="p">,</span><span class="w"> </span><span class="nx">Xtest</span><span class="p">,</span><span class="w"> </span><span class="nx">Ytest</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">dataset</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">trainRatio</span><span class="o">=</span><span class="mf">0.5</span><span class="p">);</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">clf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">naive_bayes</span><span class="p">.</span><span class="nx">train</span><span class="p">(</span><span class="nx">Xtrain</span><span class="p">,</span><span class="w"> </span><span class="nx">Ytrain</span><span class="p">);</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">Ypred</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">Ytest</span><span class="p">.</span><span class="nx">size</span><span class="p">]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-<span class="w">      </span><span class="nx">Ypred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">clf</span><span class="p">.</span><span class="nx">predict_batch</span><span class="p">(</span><span class="nx">Xtest</span><span class="p">);</span>
-
-<span class="w">      </span><span class="nx">writeln</span><span class="p">(</span><span class="s">&quot;Score: %4.2dr&quot;</span><span class="p">.</span><span class="nx">format</span><span class="p">(</span><span class="nx">accuracy</span><span class="p">(</span><span class="nx">Ytest</span><span class="p">,</span><span class="w"> </span><span class="nx">Ypred</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">100.0</span><span class="p">));</span>
-
-<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="nx">e</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nx">writeln</span><span class="p">(</span><span class="s">&quot;deu ruim &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">e</span><span class="p">:</span><span class="kt">string</span><span class="p">);</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<p>Boa parte desse código é composto apenas de operações chatas como ler arquivos com a base de dados, dividí-lo aleatóriamente em conjunto de treino e testes, e outras coisas mundanas. Fora isso, incluímos dois pontos mais importantes que são, a predição em lote e o cálculo de acurácia (grau de acerto do nosso classificador).</p>
-<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">predict_batch</span><span class="p">(</span><span class="nx">X</span><span class="p">):</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="p">{</span>
-
-<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">n_test</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">X</span><span class="p">.</span><span class="nx">shape</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">Y</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="nx">n_test</span><span class="p">]</span><span class="w"> </span><span class="kt">int</span><span class="p">;</span>
-<span class="w">  </span><span class="k">forall</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="mi">1</span><span class="o">..</span><span class="nx">n_test</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nx">Y</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">predict</span><span class="p">(</span><span class="nx">X</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="w"> </span><span class="o">..</span><span class="p">));</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">Y</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<p>A predição em batch, nada mais é do que uma função que calcula a predição do nosso modelo, para um conjunto de amostras, onde podemos aproveitar a natureza independente das amostras para executar cada predição de forma paralela.</p>
-<div class="highlight"><pre><span></span><code><span class="k">proc</span><span class="w"> </span><span class="nf">accuracy</span><span class="p">(</span><span class="nx">X1</span><span class="p">,</span><span class="w"> </span><span class="nx">X2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">var</span><span class="w"> </span><span class="nx">correct</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
-<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">X1</span><span class="p">.</span><span class="nx">size</span><span class="p">;</span>
-
-<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="nx">x1</span><span class="p">,</span><span class="w"> </span><span class="nx">x2</span><span class="p">)</span><span class="w"> </span><span class="kd">in</span><span class="w"> </span><span class="k">zip</span><span class="p">(</span><span class="nx">X1</span><span class="p">,</span><span class="w"> </span><span class="nx">X2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">x1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nx">x2</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nx">correct</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-
-<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">correct</span><span class="o">/</span><span class="nx">total</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
-<p>E a acurácia, que nada mais é do que a mais simples medida de acerto que podemos usar para avaliar nosso classificador: a proporção entre amostras corretamente classificadas e o número total de amostras do nosso conjunto de testes.</p>
-<p>Rodando pra checar os resultados, temos ...</p>
-<div class="highlight"><pre><span></span><code>./run_naive_bayes<span class="w"> </span>--csv_dataset<span class="w"> </span>./data/digits.csv<span class="w">                                                                                     </span>
-Score:<span class="w"> </span><span class="m">90</span>.32
-</code></pre></div>
-
-<p>Como nosso classificador "aprende" com os dados de entrada, podemos notar que, diferentes conjuntos de treinamento podem fazer com que nosso classificador aprenda modelos com diferentes taxas de acerto.</p>
-<p>Então, rodando de novo ...</p>
-<div class="highlight"><pre><span></span><code>./run_naive_bayes<span class="w"> </span>--csv_dataset<span class="w"> </span>./data/digits.csv<span class="w">                                                                                     </span>
-Score:<span class="w"> </span><span class="m">90</span>.77
-</code></pre></div>
-
-<p>Por isso, usualmente, para avaliarmos nosso modelo, é comum que calculemos a média de várias rodadas de treino e teste, e assim conseguirmos uma melhor avaliação do nosso modelo.</p>
-<p>Mas, basicamente, é isso aí.
-Com esses conceitos basicos, você consegue implementar seu próprio classificador, e entender um pouco das entranhas de como funciona um modelo de aprendizado de máquina.</p>
-<p>Se quiser rodar o código completo, ele está disponível <a href="https://github.com/alanpeixinho/FishLearning">aqui</a>.</p>
+<p>E é isso aí. Caso queira implementar por conta, recomendo o <a href="https://colorizer.org/">colorizer</a> como uma referencia muito útil para os testes.</p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
@@ -382,13 +237,52 @@ Com esses conceitos basicos, você consegue implementar seu próprio classificad
     (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
 }
 </script> 
-	<a class="btn btn-mini xsmall" href="https://alanpeixinho.github.io/sobre-classificadores-e-teorema-de-bayes.html">
+	<a class="btn btn-mini xsmall" href="https://alanpeixinho.github.io/retrocompatibilidade-e-espaco-de-cores.html">
           <i class="icon-comment"></i> Comment </a>
 	<hr />
       </div>
       
     </div>
     
+
+ 
+        
+
+
+
+    <div class='row-fluid'>
+      <div class='article-title span9'> 
+        <a href="https://alanpeixinho.github.io/sobre-classificadores-e-teorema-de-bayes.html"><h1>Sobre Classificadores e Teorema de Bayes</h1></a>
+      </div>
+    </div>
+    <div class="row-fluid">
+      <div class="span2">
+<p>Wed 05 February 2020 </p>
+
+<p style="text-align: left;">
+Filed under <a href="https://alanpeixinho.github.io/category/posts.html">posts</a>
+</p>
+<p style="text-align: left;">
+ 
+    Tags <a href="https://alanpeixinho.github.io/tag/machine-learning.html">machine learning</a> <a href="https://alanpeixinho.github.io/tag/data-science.html">data science</a> <a href="https://alanpeixinho.github.io/tag/chapel.html">chapel</a> </p>
+<p>
+</p>
+      </div>
+      <div class="summary span8">
+	<p>Umas das principais ferramentas na nossa caixa de ferramentas de reconhecimento de padrões certamente vem dos <strong>classificadores de padrões</strong>.</p>
+<p>Então para começarmos nossa jornada, vamos entender alguns conceitos fundamentais.</p>
+<p><a href="https://www.youtube.com/watch?v=cGufy1PAeTU"><img alt="" src="/images/zelda_bayes.png"></a></p>
+<h2>Classificação de Padrões</h2>
+<p>Imagine um cenário onde temos diversas amostras separadas em diferentes grupos.</p>
+<p><img alt="" src="/images/pokemon_starters.png"></p>
+<p>De forma bastante simples, qualquer pessoa mesmo …</p> 
+	<a class="btn btn-mini xsmall" href="https://alanpeixinho.github.io/sobre-classificadores-e-teorema-de-bayes.html">
+          <i class="icon-plus-sign"></i> Read More </a>
+	<hr />
+      </div>
+      
+    </div>
+      
 <div class="pagination">
 <ul>
     <li class="prev disabled"><a href="#">&larr; Previous</a></li>
